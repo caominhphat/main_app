@@ -211,5 +211,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
-
+    'list' => [
+        'limit' => env('DEFAULT_LIMIT', 10)
+    ],
 ];

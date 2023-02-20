@@ -43,10 +43,15 @@ abstract class ModelRepository
         return $this->_model->all();
     }
 
-    public function getUndeletedItems()
+    public function getUndeletedItems($request)
     {
+        $limit = $request['limit'] ?? 0;
 
-        return $this->_model->where('delete_flag', config('constants.UNDELETED'))->get();
+        if (empty($limit) || !is_numeric($limit)) {
+            $limit = config('app.list.limit');
+        }
+        $builder = $this->_model->where('delete_flag', config('constants.UNDELETED'));
+        return $builder->paginate($limit);
     }
 
     /**
@@ -105,9 +110,9 @@ abstract class ModelRepository
             return false;
     }
 
-    public function index()
+    public function index($request)
     {
-        return $this->getUndeletedItems()->toArray();;
+        return $this->getUndeletedItems($request)->toArray();
     }
 
 }

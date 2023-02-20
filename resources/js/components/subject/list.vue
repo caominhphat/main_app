@@ -10,14 +10,15 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(subject,index) in subjects">
+            <tr v-for="(subject,index) in this.list.data">
                 <td>{{index + 1}}</td>
                 <td>{{subject.name}}</td>
+                <td>{{list.last_page}}</td>
                 <td>
                     <div class="btn-group" role="group">
                         <!--                        <router-link :to="{name: 'editbook', params: { id: student.id }}" class="btn btn-primary">Edit-->
                         <!--                        </router-link>-->
-                        <button class="btn btn-danger" @click="deleteBook(subject.id)">Delete</button>
+                        <button class="btn btn-danger" @click="deleteItem(subject.id)">Delete</button>
                     </div>
                 </td>
             </tr>
@@ -26,13 +27,27 @@
 
         <button type="button" class="btn btn-info" @click="this.$router.push('/books/add')">Add Book</button>
     </div>
+    <Paginate
+        :page-count="this.list.last_page"
+        :page-range="3"
+        :margin-pages="2"
+        :click-handler="onClickPaginate"
+        prev-text="<i class='bx bx-skip-previous' ></i>"
+        next-text="<i class='bx bx-skip-next' ></i>"
+        :container-class="'pagination'"
+        :page-class="'page-item'"
+    />
 </template>
 
 <script>
+import ListMixin from '../../mixins/list.js'
 export default {
+    mixins: [
+        ListMixin
+    ],
     data() {
         return {
-            subjects: []
+            prefix: 'subjects'
         }
     },
     // created() {
@@ -46,15 +61,22 @@ export default {
     //             });
     //     })
     // },
-    mounted() {
-        this.getList();
-    },
+
     methods: {
-        getList() {
-            axios.get('/api/subjects')
+
+        getList(page = null) {
+            let sendData = {
+                page : page ? page : this.list.current_page,
+                limit: 2
+            }
+            axios.post('/api/subjects', sendData)
                 .then(response => {
                     if(response.status == 200) {
-                        this.subjects = response['data'] ? response['data'] : [];
+                        for(let k in this.list){
+                            if(response.data[k] != undefined){
+                                this.list[k] = response.data[k];
+                            }
+                        }
                     }
                 })
                 .catch(function (error) {
@@ -79,7 +101,9 @@ export default {
                     .catch(function (error) {
                         console.error(error);
                     });
-        }
+        },
+
+
     },
     // beforeRouteEnter(to, from, next) {
     //     if (!window.Laravel.isLoggedin) {

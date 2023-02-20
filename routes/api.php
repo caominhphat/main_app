@@ -23,8 +23,15 @@ Route::get('/', [\App\Http\Controllers\StudentController::class, 'index']);
 
 Route::controller(\App\Http\Controllers\SubjectController::class)->group(function() {
     Route::group(['prefix' => 'subjects'], function () {
-        Route::get('/', 'index');
+        Route::any('/', 'index');
         Route::delete('delete/{id}', 'delete')->where('id', '[0-9]+');
     });
 });
+
+    Route::controller(\App\Http\Controllers\StudentController::class)->group(function() {
+        Route::group(['prefix' => 'students'], function () {
+            Route::any('/', 'index');
+            Route::delete('delete/{id}', 'delete')->where('id', '[0-9]+');
+        });
+    });
 

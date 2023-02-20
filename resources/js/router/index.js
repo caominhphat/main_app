@@ -1,10 +1,10 @@
 import {createRouter, createWebHistory} from "vue-router";
-import listBooks from '../components/books/list.vue';
+import listStudents from '../components/students/list.vue';
 import a from '../components/home.vue';
 import register from '../components/register.vue';
 import login from '../components/login.vue';
 import listSubjects from '../components/subject/list.vue'
-import addBooks from '../components/books/add.vue';
+import addBooks from '../components/students/add.vue';
 
 const routes = [
     {
@@ -13,7 +13,7 @@ const routes = [
     },
     {
         path: '/list',
-        component: listBooks
+        component: listStudents
     },
     {
         path: '/listSubject',
