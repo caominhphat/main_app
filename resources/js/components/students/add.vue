@@ -3,31 +3,49 @@
         <h4 class="text-center">Add Student</h4>
         <div class="row">
             <div class="col-md-6">
-                <form @submit.prevent="onSubmit">
-                    <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" class="form-control" v-model="form.name">
-                    </div>
-                    <div class="form-group">
-                        <label>BirthDay</label>
-                        <VueDatePicker v-model="form.birth_day"></VueDatePicker>
-                    </div>
-                    <button type="submit" class="btn btn-primary mt-4">Add students</button>
-                </form>
+                <VeeForm :validation-schema="schema" v-slot="{ handleSubmit , isSubmitting}">
+                    <form @submit="handleSubmit($event, onSubmit)">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <Field name="name" type="text" v-model="form.name">
+                                <input type="text" class="form-control" v-model="form.name">
+                                <ErrorMessage name="name" class="text-danger"/>
+                            </Field>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Birth day</label>
+                            <Field name="birth_day" v-model="form.birth_day">
+                                <VueDatePicker autoApply :enableTimePicker="false"
+                                               :format="$helper.Enum.DATE_FORMAT_SHORT"
+                                               v-model="form.birth_day"></VueDatePicker>
+                                <ErrorMessage name="birth_day" class="text-danger"/>
+                            </Field>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-4">Add students</button>
+                    </form>
+
+                </VeeForm>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import addMixin from '../../mixins/add.js'
+import {Field, Form as VeeForm, ErrorMessage, defineRule} from 'vee-validate';
+import addMixin from '../../mixins/add.js';
 export default {
+    components: {Field, VeeForm, ErrorMessage},
     data() {
         return {
             prefix: 'students',
             form : {
                 'name': '',
                 'birth_day': '',
+            },
+            schema: {
+                'name' : 'required',
+                'birth_day' : 'required'
             }
         }
     },

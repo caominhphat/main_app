@@ -22,6 +22,7 @@ abstract class ModelRepository
      * @return string
      */
     abstract public function getModel();
+    abstract public function getRules();
 
     /**
      * Set model
@@ -115,4 +116,25 @@ abstract class ModelRepository
         return $this->getUndeletedItems($request)->toArray();
     }
 
+    public function resources($request) {
+        return [
+            'validation' => $this->getRules(),
+        ];
+    }
+
+    public function add ($request) {
+        if(!empty($request)) {
+            if(!empty($request['birth_day'])) {
+                $request['birth_day'] =  $this->formatUTC($request['birth_day']);
+            }
+            return $this->create($request);
+        }
+        return [
+            'success' => false
+        ];
+    }
+
+    protected function formatUTC ($sUtcTime) {
+        return substr($sUtcTime, 0, 10);
+    }
 }

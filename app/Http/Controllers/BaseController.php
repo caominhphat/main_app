@@ -20,4 +20,12 @@ class BaseController extends Controller
     public function delete ($id) {
         return $this->repository->delete($id);
     }
+
+    public function resources (Request $request) {
+        return $this->repository->resources($request->toArray());
+    }
+
+    public function add (Request $request) {
+        return $this->repository->add($request->toArray());
+    }
 }

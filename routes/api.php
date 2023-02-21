@@ -25,13 +25,16 @@ Route::controller(\App\Http\Controllers\SubjectController::class)->group(functio
     Route::group(['prefix' => 'subjects'], function () {
         Route::any('/', 'index');
         Route::delete('delete/{id}', 'delete')->where('id', '[0-9]+');
+        Route::any('resources', 'resources');
     });
 });
 
-    Route::controller(\App\Http\Controllers\StudentController::class)->group(function() {
-        Route::group(['prefix' => 'students'], function () {
-            Route::any('/', 'index');
-            Route::delete('delete/{id}', 'delete')->where('id', '[0-9]+');
-        });
+Route::controller(\App\Http\Controllers\StudentController::class)->group(function() {
+    Route::group(['prefix' => 'students'], function () {
+        Route::any('/', 'index');
+        Route::delete('delete/{id}', 'delete')->where('id', '[0-9]+');
+        Route::any('resources', 'resources');
+        Route::post('add', 'add');
     });
+});
 

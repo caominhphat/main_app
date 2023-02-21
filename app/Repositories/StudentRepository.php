@@ -13,4 +13,11 @@ class StudentRepository extends ModelRepository
         return Student::class;
     }
 
+    public function getRules()
+    {
+       return [
+            'name' => 'required|max:255',
+            'birth_day' => 'required',
+       ];
+    }
 }
