@@ -1,0 +1,33 @@
+Vue LifeCycle
+
+1. creation: trước khi khởi tạo các template, html to DOM trên browser
+
+beforeCreate(): 
++Lúc này data, methods, components, attribute, computed, watchers chưa khởi tạo nên ko dùng đc
+=> only gọi các API mà ko truy cập các thuộc tính trên
+
+created(): 
++ data, methods, components, attribute, computed, watchers đã được tạo và dùng được
++ Nên gọi các API resource để gắn giá trị cho các data ở hook này
+
+2. mounting: khởi tạo các template, html vào DOM trên browser
+
+beforeMount():
++ Khúc này chưa truy cập được DOM
+
+Mounted:
++ Khúc này đã truy cập được DOM
++ Thường được setup khởi tạo ban đầu cho dom: ví dụ (khởi tạo khi vào trang add thì tự động focus vào ô input id='1')
+
+3. updating: giai đoạn này được gọi khi các reactive properties such as data, computed của 1 components thay đổi
+
+beforeUpdate():
++ được gọi khi data thay đổi, nhưng trc khi DOM được patched (cập nhật)
++ thường được dùng để access DOM hiện tại trước khi nó thay đổi, và có thể xóa sự kiện hiện có, nếu sự kiện đó nên đc remove khi update
+
+updated():
++ sau khi đã cập nhật DOM
++ thường được sử dụng để thay đổi DOM operation mong muốn như mounted. Ví dụ: Khi data change xong thì focus vào input có id = 1
+
+4. unmounting : giai đoạn khi component bị xóa hoặc bị replace
+Ví dụ: lúc đầu view đang sử dụng component A, khi click nút B trên UI, lúc này component B sẽ thay thế cho component A
