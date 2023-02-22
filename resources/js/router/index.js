@@ -4,7 +4,8 @@ import a from '../components/home.vue';
 import register from '../components/register.vue';
 import login from '../components/login.vue';
 import listSubjects from '../components/subject/list.vue'
-import addBooks from '../components/students/add.vue';
+import addStudents from '../components/students/add.vue';
+import addSubjects from '../components/subject/add.vue';
 
 const routes = [
     {
@@ -29,7 +30,21 @@ const routes = [
     },
     {
         path: '/add',
-        component: addBooks
+        component: addStudents
+    },
+    {
+        path: '/addSubject',
+        component: addSubjects
+    },
+    {
+        name: 'edit.subject',
+        path: '/edit/:id(\\d+)',
+        component: addSubjects
+    },
+    {
+        name: 'edit.student',
+        path: '/edit/:id(\\d+)',
+        component: addStudents
     },
 ];
 

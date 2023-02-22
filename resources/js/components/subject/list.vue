@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <h4 class="text-center">All subjects</h4><br/>
+    <div class="container-xxl rounded">
+        <h4 class="text-center" id="here">All subjects</h4><br/>
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -13,30 +13,34 @@
             <tr v-for="(subject,index) in this.list.data">
                 <td>{{index + 1}}</td>
                 <td>{{subject.name}}</td>
-                <td>{{list.last_page}}</td>
                 <td>
                     <div class="btn-group" role="group">
-                        <!--                        <router-link :to="{name: 'editbook', params: { id: student.id }}" class="btn btn-primary">Edit-->
-                        <!--                        </router-link>-->
+                        <router-link :to="{name: 'edit.subject', params: { id: subject.id }}" class="btn btn-primary">Edit</router-link>
                         <button class="btn btn-danger" @click="deleteItem(subject.id)">Delete</button>
                     </div>
                 </td>
             </tr>
             </tbody>
         </table>
-
-        <button type="button" class="btn btn-info" @click="this.$router.push('/books/add')">Add Book</button>
+        <div class="row">
+            <div class="col-md-4">
+                <button type="button" class="btn btn-info" @click="this.$router.push('/addSubject')">Add Subject</button>
+            </div>
+            <div class="col-md-8 d-flex flex-row-reverse">
+                <Paginate
+                    v-model="this.list.current_page"
+                    :page-count="this.list.last_page"
+                    :page-range="3"
+                    :margin-pages="2"
+                    :click-handler="onClickPaginate"
+                    prev-text="Previous"
+                    next-text="Next"
+                    :container-class="'pagination'"
+                    :page-class="'page-item'"
+                />
+            </div>
+        </div>
     </div>
-    <Paginate
-        :page-count="this.list.last_page"
-        :page-range="3"
-        :margin-pages="2"
-        :click-handler="onClickPaginate"
-        prev-text="<i class='bx bx-skip-previous' ></i>"
-        next-text="<i class='bx bx-skip-next' ></i>"
-        :container-class="'pagination'"
-        :page-class="'page-item'"
-    />
 </template>
 
 <script>
@@ -50,17 +54,6 @@ export default {
             prefix: 'subjects'
         }
     },
-    // created() {
-    //     this.$axios.get('/sanctum/csrf-cookie').then(response => {
-    //         this.$axios.get('/api/books')
-    //             .then(response => {
-    //                 this.books = response.data;
-    //             })
-    //             .catch(function (error) {
-    //                 console.error(error);
-    //             });
-    //     })
-    // },
 
     methods: {
 
@@ -83,25 +76,6 @@ export default {
                     console.error(error);
                 });
         },
-        deleteBook(id) {
-            // this.$axios.get('/sanctum/csrf-cookie').then(response => {
-            //     this.$axios.delete(`/api/books/delete/${id}`)
-            //         .then(response => {
-            //             let i = this.books.map(item => item.id).indexOf(id); // find index of your object
-            //             this.books.splice(i, 1)
-            //         })
-            //         .catch(function (error) {
-            //             console.error(error);
-            //         });
-            // })
-            axios.delete(`/api/subjects/delete/${id}`)
-                    .then(response => {
-                        this.getList()
-                    })
-                    .catch(function (error) {
-                        console.error(error);
-                    });
-        },
 
 
     },
@@ -111,5 +85,6 @@ export default {
     //     }
     //     next();
     // }
+
 }
 </script>

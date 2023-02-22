@@ -19,6 +19,7 @@ export default {
             axios.delete('/api/' + this.prefix + action + `${id}`)
                 .then(response => {
                     this.getList(1)
+                    this.list.current_page = 1;
                     this.$forceUpdate
                 })
                 .catch(function (error) {

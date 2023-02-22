@@ -13,4 +13,15 @@ class SubjectRepository extends ModelRepository
         return Subject::class;
     }
 
+    public function getRules()
+    {
+        return [
+            'add' => [
+                'name' => 'required|max:255',
+            ],
+            'edit' => [
+                'name' => 'required|max:255',
+            ]
+        ];
+    }
 }

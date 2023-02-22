@@ -9,15 +9,20 @@ class StudentRepository extends ModelRepository
 
     public function getModel()
     {
-        // TODO: Implement getModel() method.
         return Student::class;
     }
 
     public function getRules()
     {
        return [
-            'name' => 'required|max:255',
-            'birth_day' => 'required',
+           'add' => [
+               'name' => 'required|max:255',
+               'birth_day' => 'required',
+           ],
+           'edit' => [
+               'name' => 'required|max:255',
+               'birth_day' => 'required',
+           ]
        ];
     }
 }

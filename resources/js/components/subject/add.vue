@@ -1,6 +1,6 @@
 <template>
     <div class="ms-4">
-        <h4 class="text-center">{{mode}} Student</h4>
+        <h4 class="text-center">{{mode}} Subject</h4>
         <div class="row">
             <div class="col-md-6">
                 <VeeForm :validation-schema="resources.validation" v-slot="{ handleSubmit , isSubmitting}">
@@ -12,19 +12,8 @@
                                 <ErrorMessage name="name" class="text-danger"/>
                             </Field>
                         </div>
-
-                        <div class="form-group">
-                            <label>Birth day</label>
-                            <Field name="birth_day" v-model="form.birth_day">
-                                <VueDatePicker autoApply :enableTimePicker="false"
-                                               :format="$helper.Enum.DATE_FORMAT_SHORT"
-                                               v-model="form.birth_day"></VueDatePicker>
-                                <ErrorMessage name="birth_day" class="text-danger"/>
-                            </Field>
-                        </div>
-                        <button type="submit" class="btn btn-primary mt-4">{{mode}} students</button>
+                        <button type="submit" class="btn btn-primary mt-4">{{mode}} subjects</button>
                     </form>
-
                 </VeeForm>
             </div>
         </div>
@@ -38,15 +27,10 @@ export default {
     components: {Field, VeeForm, ErrorMessage},
     data() {
         return {
-            prefix: 'students',
+            prefix: 'subjects',
             form : {
                 'name': '',
-                'birth_day': '',
             },
-            schema: {
-                'name' : 'required',
-                'birth_day' : 'required'
-            }
         }
     },
     mixins : [

@@ -116,10 +116,15 @@ abstract class ModelRepository
         return $this->getUndeletedItems($request)->toArray();
     }
 
-    public function resources($request) {
-        return [
+    public function resources($id) {
+        $result = [
             'validation' => $this->getRules(),
         ];
+        if($id) {
+            $item = $this->find($id);
+            $result['object'] = $item;
+        }
+        return $result;
     }
 
     public function add ($request) {
@@ -127,7 +132,7 @@ abstract class ModelRepository
             if(!empty($request['birth_day'])) {
                 $request['birth_day'] =  $this->formatUTC($request['birth_day']);
             }
-            return $this->create($request);
+            return $this->isEditMode($request) ? $this->update($request['id'], $request) : $this->create($request);
         }
         return [
             'success' => false
@@ -136,5 +141,12 @@ abstract class ModelRepository
 
     protected function formatUTC ($sUtcTime) {
         return substr($sUtcTime, 0, 10);
+    }
+
+    protected function isEditMode($request){
+        if(!empty($request['id'])) {
+            return true;
+        }
+        return false;
     }
 }

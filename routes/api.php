@@ -25,7 +25,9 @@ Route::controller(\App\Http\Controllers\SubjectController::class)->group(functio
     Route::group(['prefix' => 'subjects'], function () {
         Route::any('/', 'index');
         Route::delete('delete/{id}', 'delete')->where('id', '[0-9]+');
-        Route::any('resources', 'resources');
+        Route::any('resources/{id?}', 'resources');
+        Route::put('edit', 'add');
+        Route::post('add', 'add');
     });
 });
 
@@ -33,7 +35,8 @@ Route::controller(\App\Http\Controllers\StudentController::class)->group(functio
     Route::group(['prefix' => 'students'], function () {
         Route::any('/', 'index');
         Route::delete('delete/{id}', 'delete')->where('id', '[0-9]+');
-        Route::any('resources', 'resources');
+        Route::any('resources/{id?}', 'resources');
+        Route::put('edit', 'add');
         Route::post('add', 'add');
     });
 });
