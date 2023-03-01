@@ -9,6 +9,7 @@ import App from './components/App.vue'
 import router from "./router"
 import AllRules from '@vee-validate/rules';
 import Helper from './plugins/helper';
+import store from './store/index';
 
 Object.keys(AllRules).forEach(rule => {
     defineRule(rule, AllRules[rule]);
@@ -16,6 +17,7 @@ Object.keys(AllRules).forEach(rule => {
 createApp(App)
     .use(router)
     .use(Helper)
+    .use(store)
     .component('Field', Field)
     .component('VeeForm', Form)
     .component('Paginate', Paginate)
