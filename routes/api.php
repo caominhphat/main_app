@@ -27,9 +27,12 @@ Route::group(['prefix' => 'authorize'], function () {
     });
 });
 
-Route::post('register', [UserController::class, 'register']);
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::controller(\App\Http\Controllers\UserController::class)->group(function () {
+        Route::any('logout', 'logout');
+    });
+});
 
-Route::get('/', [\App\Http\Controllers\StudentController::class, 'index']);
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::controller(\App\Http\Controllers\SubjectController::class)->group(function () {
         Route::group(['prefix' => 'subjects'], function () {

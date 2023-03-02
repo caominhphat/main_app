@@ -44,14 +44,31 @@ class UserRepository extends ModelRepository
 
     public function login ($request) {
         if(!empty($request)) {
-            $user = Auth::getProvider()->retrieveByCredentials($request);
-            if(!empty($user->toArray())) {
-                Auth::login($user);
+            $user = $this->_model
+                ->where('email', $request['email'])
+                ->where('password', $request['password'])
+                ->first();
+            if(empty($user)) {
+                return [
+                    'success' => false
+                ];
             }
+            Auth::login($user);
+            $loginUser = Auth::user();
+            $user['access_token'] = $loginUser->createToken('authToken')
+                ->plainTextToken;
+            $user['token_type'] = 'Bearer';
             return [
                 'user' => $user->toArray(),
                 'success' => true
             ];
+        }
+    }
+
+    public function logout () {
+        $auth = Auth::user();
+        if ($auth) {
+            $auth->tokens()->where('id', auth()->id())->delete();
         }
     }
 }

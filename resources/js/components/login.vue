@@ -44,6 +44,7 @@
 <script>
 import { mapActions } from 'vuex'
 import {Field, Form as VeeForm, ErrorMessage, defineRule} from 'vee-validate';
+import store from "../store";
 export default {
     components: {Field, VeeForm, ErrorMessage},
     data() {
@@ -91,7 +92,7 @@ export default {
                 .then(response => {
                     if (response.data.success) {
                         this.signIn(response.data.user)
-                        window.location.href = "/addSubject"
+                        window.location.href = "/"
                     } else {
                         this.error = response.data.message
                     }

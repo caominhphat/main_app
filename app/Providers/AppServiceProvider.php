@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Constants\Enum;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,9 +25,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-        Builder::macro('whereUndeleted', function (Builder $builder) {
-            return $builder->where('delete_flag', config('constants.UNDELETED'));
+        Builder::macro('whereUndeleted', function () {
+            $this->where(function ($q) {
+                return $q->orWhereNull('delete_flag')
+                    ->orWhere('delete_flag', config('constants.UNDELETED'));
+            });
         });
     }
 }

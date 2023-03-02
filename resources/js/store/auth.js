@@ -4,7 +4,9 @@ export default {
     namespaced: true,
     state:{
         authenticated:false,
-        user:{}
+        user:{},
+        token_type:'',
+        access_token:''
     },
     getters:{
         authenticated(state){
@@ -20,12 +22,20 @@ export default {
         },
         SET_USER (state, value) {
             state.user = value
-        }
+        },
+        SET_TOKEN_TYPE(state, value) {
+            state.token_type = value
+        },
+        SET_ACCESS_TOKEN(state, value) {
+            state.access_token = value
+        },
     },
     actions:{
         setupLoginUser({commit}, data){
             commit('SET_USER',data)
             commit('SET_AUTHENTICATED',true)
+            commit('SET_TOKEN_TYPE',data['token_type'] ?? '')
+            commit('SET_ACCESS_TOKEN',data['access_token'] ?? '')
         },
         login({commit}){
             return axios.get('/api/user').then(({data})=>{
@@ -40,6 +50,8 @@ export default {
         logout({commit}){
             commit('SET_USER',{})
             commit('SET_AUTHENTICATED',false)
+            commit('SET_TOKEN_TYPE','')
+            commit('SET_ACCESS_TOKEN','')
         }
     }
 }

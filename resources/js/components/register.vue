@@ -3,9 +3,11 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
 
-                <div class="alert alert-danger" role="alert" v-if="error !== null">
-                    {{ error }}
-                </div>
+                <Notify
+                    :statement="notify.title"
+                    :isApiDone="notify.display"
+                    :classColor="notify.classColor"
+                />
 
                 <div class="card card-default">
                     <div class="card-header">Register</div>
@@ -51,11 +53,17 @@
 </template>
 
 <script>
+import Notify from './notify/notifyComponent.vue'
 import {Field, Form as VeeForm, ErrorMessage, defineRule} from 'vee-validate';
 export default {
-    components: {Field, VeeForm, ErrorMessage},
+    components: {Field, VeeForm, ErrorMessage, Notify},
     data() {
         return {
+            notify: {
+              title:'',
+              display: false,
+              classColor: ''
+            },
             error: null,
             prefix: 'authorize',
             resources: {
@@ -93,6 +101,9 @@ export default {
                         password: this.form.password
                     })
                         .then(response => {
+                            this.notify.title = 'Thêm data thành công'
+                            this.notify.display = true
+                            this.notify.classColor = 'alert-success'
                             if (response.data.success) {
                                 window.location.href = "/login"
                             } else {
@@ -100,6 +111,9 @@ export default {
                             }
                         })
                         .catch(function (error) {
+                            this.notify.title = 'Thêm data thất bại'
+                            this.notify.display = true
+                            this.notify.classColor = 'alert-danger'
                             console.error(error);
                         });
         },

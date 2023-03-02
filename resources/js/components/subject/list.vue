@@ -62,12 +62,13 @@ export default {
                 page : page ? page : this.list.current_page,
                 limit: 2
             }
-            axios.post('/api/subjects', sendData)
+
+            this.$helper.post('subjects', sendData)
                 .then(response => {
-                    if(response.status == 200) {
+                    if(response.data.length > 0) {
                         for(let k in this.list){
-                            if(response.data[k] != undefined){
-                                this.list[k] = response.data[k];
+                            if(response[k] != undefined){
+                                this.list[k] = response[k];
                             }
                         }
                     }

@@ -63,7 +63,8 @@ const router = createRouter({
 
 router.beforeEach( (to, from, next) => {
         if (to.name !== 'login' && to.name !== 'register' && !store.state.auth.authenticated) next({ name: 'login' })
-        else next()
+            else if(to.name == 'login' && store.state.auth.authenticated) next({ name: 'home' })
+            else next()
 })
 
 export default router
