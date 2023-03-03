@@ -65,10 +65,10 @@ class UserRepository extends ModelRepository
         }
     }
 
-    public function logout () {
+    public function logout ($request) {
         $auth = Auth::user();
         if ($auth) {
-            $auth->tokens()->where('id', auth()->id())->delete();
+            $request->user()->currentAccessToken()->delete();
         }
     }
 }

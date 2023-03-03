@@ -40,7 +40,7 @@ export default {
             logout:'auth/logout'
         }),
         logoutUser(){
-            this.$helper.post('logout')
+            this.$helper.post('authorize/logout')
             this.logout();
             window.location.href = "/login"
         }

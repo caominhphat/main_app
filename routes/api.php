@@ -24,11 +24,6 @@ Route::group(['prefix' => 'authorize'], function () {
         Route::post('login', 'login');
         Route::post('register', 'register');
         Route::get('resources', 'resources');
-    });
-});
-
-Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::controller(\App\Http\Controllers\UserController::class)->group(function () {
         Route::any('logout', 'logout');
     });
 });

@@ -20,7 +20,7 @@ class UserController extends BaseController
         return $this->repository->login($request->toArray());
     }
 
-    public function logout () {
-        return $this->repository->logout();
+    public function logout (Request $request) {
+        return $this->repository->logout($request);
     }
 }
