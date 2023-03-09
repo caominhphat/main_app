@@ -25,11 +25,11 @@ export default {
             }
         },
         loadResources(data={}) {
-            let url = '/api/' + this.prefix + "/resources";
+            let url = this.prefix + "/resources";
             if(this.isEditMode()) {
                 url += '/' + this.$route.params.id;
             }
-            axios.get(url)
+            this.$helper.get(url)
                 .then(res=>{
                     if(res.status == 200) {
                         this.mappingResources(res);
@@ -46,10 +46,10 @@ export default {
             if(this.isEditMode()) {
                 action = '/edit'
                 data.id = this.$route.params.id;
-                promise = axios.put('/api/' + this.prefix + action, data);
+                promise = this.$helper.put(this.prefix + action, data);
 
             } else {
-                promise =  axios.post('/api/' + this.prefix + action, data);
+                promise =  this.$helper.post(this.prefix + action, data);
             };
 
             promise.then(response => {
