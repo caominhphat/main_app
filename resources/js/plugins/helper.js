@@ -20,6 +20,14 @@ export default {
                 }
             },
 
+            async get(link, data, config = {}){
+                this.setAuthHeader(config);
+                let uri = link;
+                if(data){
+                    uri += '?' + (new URLSearchParams(data)).toString();
+                }
+                return this.customPost('get', uri, config);
+            },
             async post(link, data = {}, config = {}){
                 return this.customPost('post', link, data, config)
             },

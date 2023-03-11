@@ -25,20 +25,18 @@ export default {
             }
         },
         loadResources(data={}) {
-            let url = "/api/" +this.prefix + "/resources";
+            let url = this.prefix + "/resources";
             if(this.isEditMode()) {
                 url += '/' + this.$route.params.id;
             }
-            let config = {};
-            this.$helper.setAuthHeader(config)
-            axios.get(url, config).then(res=>{
-                if(res.status == 200) {
-                    this.mappingResources(res);
-                }
-            }).catch(err=>{
-                return err;
+            this.$helper.get(url)
+                .then(res=>{
+                    if(res.status == 200) {
+                        this.mappingResources(res);
+                    }
+                }).catch(err=>{
+                    return err;
             })
-
         },
         onSubmit() {
             let promise;
