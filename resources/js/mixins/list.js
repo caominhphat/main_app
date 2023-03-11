@@ -16,7 +16,7 @@ export default {
     methods: {
         deleteItem(id) {
             let action = '/delete/';
-            axios.delete('/api/' + this.prefix + action + `${id}`)
+            this.$helper.delete(this.prefix + action + `${id}`)
                 .then(response => {
                     this.getList(1)
                     this.list.current_page = 1;
@@ -31,25 +31,23 @@ export default {
         },
 
         getList(page = null) {
-            let config = {};
-            this.$helper.setAuthHeader(config)
             let sendData = {
                 page : page ? page : this.list.current_page,
                 limit: 2
             }
-            console.log(config)
-            axios.post('/api/' + this.prefix, sendData, config)
+            this.$helper.post(this.prefix, sendData)
                 .then(response => {
-                    if(response.status == 200) {
+                    console.log(response)
+                    if(response.length > 0) {
                         for(let k in this.list){
-                            if(response.data[k] != undefined){
-                                this.list[k] = response.data[k];
+                            if(response[k] != undefined){
+                                this.list[k] = response[k];
                             }
                         }
                     }
                 })
                 .catch(function (error) {
-                    console.error(error);
+                    console.log(error);
                 });
         },
 

@@ -53,6 +53,7 @@ class UserRepository extends ModelRepository
                     'success' => false
                 ];
             }
+
             Auth::login($user);
             $loginUser = Auth::user();
             $user['access_token'] = $loginUser->createToken('authToken')

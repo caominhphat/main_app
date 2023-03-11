@@ -24,4 +24,11 @@ class SubjectRepository extends ModelRepository
             ]
         ];
     }
+
+    public function getAll()
+    {
+        $user = $this->_model;
+//        dd($user->with('students')->get()->toArray());
+        return $this->_model->all();
+    }
 }

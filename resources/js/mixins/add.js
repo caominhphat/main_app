@@ -25,18 +25,20 @@ export default {
             }
         },
         loadResources(data={}) {
-            let url = '/api/' + this.prefix + "/resources";
+            let url = "/api/" +this.prefix + "/resources";
             if(this.isEditMode()) {
                 url += '/' + this.$route.params.id;
             }
-            axios.get(url)
-                .then(res=>{
-                    if(res.status == 200) {
-                        this.mappingResources(res);
-                    }
-                }).catch(err=>{
-                    return err;
+            let config = {};
+            this.$helper.setAuthHeader(config)
+            axios.get(url, config).then(res=>{
+                if(res.status == 200) {
+                    this.mappingResources(res);
+                }
+            }).catch(err=>{
+                return err;
             })
+
         },
         onSubmit() {
             let promise;
@@ -46,10 +48,10 @@ export default {
             if(this.isEditMode()) {
                 action = '/edit'
                 data.id = this.$route.params.id;
-                promise = axios.put('/api/' + this.prefix + action, data);
+                promise = this.$helper.put(this.prefix + action, data);
 
             } else {
-                promise =  axios.post('/api/' + this.prefix + action, data);
+                promise =  this.$helper.post(this.prefix + action, data);
             };
 
             promise.then(response => {

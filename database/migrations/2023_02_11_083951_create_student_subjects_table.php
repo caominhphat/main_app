@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->tinyInteger('student_id');
             $table->tinyInteger('subject_id');
+            $table->tinyInteger('delete_flag')->default(0);
             $table->timestamps();
         });
     }

@@ -113,7 +113,7 @@ abstract class ModelRepository
 
     public function index($request)
     {
-        return $this->getUndeletedItems($request)->toArray();
+        return $this->getAll();
     }
 
     public function resources($id) {

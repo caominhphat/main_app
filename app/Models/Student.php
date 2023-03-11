@@ -16,4 +16,8 @@ class Student extends Model
     protected $table = 'students';
     protected $primaryKey = 'id';
     protected $fillable = ['name', 'birth_day', 'delete_flag'];
+
+    public function subjects() {
+        return $this->belongsToMany(Subject::class, 'student_subject', 'student_id', 'subject_id');
+    }
 }
