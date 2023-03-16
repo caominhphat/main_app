@@ -29,6 +29,15 @@ Route::group(['prefix' => 'authorize'], function () {
 });
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::controller(UserController::class)->group(function (){
+        Route::post('check_valid_access_token', function (){
+            return [
+              'status_code' => 200,
+              'is_valid_token' => true
+            ];
+        });
+    });
+
     Route::controller(\App\Http\Controllers\SubjectController::class)->group(function () {
         Route::group(['prefix' => 'subjects'], function () {
             Route::any('/', 'index');

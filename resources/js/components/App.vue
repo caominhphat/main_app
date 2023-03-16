@@ -44,6 +44,10 @@ export default {
             this.logout();
             window.location.href = "/login"
         }
+    },
+
+    beforeCreate() {
+        this.$helper.post('check_valid_access_token')
     }
 }
 </script>

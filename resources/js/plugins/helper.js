@@ -52,8 +52,8 @@ export default {
                 return promise.then(res=>res.data)
                     .catch(error=>{
                         if(error.response.status === 401){
-                            store.setState({ key : "user", val : null });
-                            store.setState({ key : "appPermissions", val : {} })
+                            store.dispatch('auth/logout')
+                            this.$forceUpdate
                         }
                         throw error;
                     });

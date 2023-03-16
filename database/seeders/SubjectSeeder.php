@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Subject;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -15,17 +16,8 @@ class SubjectSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('subjects')->insert([
-                [
-                    'name' => 'Toan cao cap',
-                ],
-                [
-                    'name' => 'Van hoc',
-                ],
-                [
-                    'name' => 'Hoa hoc',
-                ]
-            ]
-        );
+        Subject::factory()
+            ->count(50)
+            ->create();
     }
 }

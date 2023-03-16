@@ -31,19 +31,17 @@ export default {
         },
 
         getList(page = null) {
-            let config = {};
-            this.$helper.setAuthHeader(config)
             let sendData = {
                 page : page ? page : this.list.current_page,
-                limit: 2
+                limit: 10
             }
-            console.log(config)
-            axios.post('/api/' + this.prefix, sendData, config)
+
+            this.$helper.post(this.prefix, sendData)
                 .then(response => {
-                    if(response.status == 200) {
+                    if(response.data.length > 0) {
                         for(let k in this.list){
-                            if(response.data[k] != undefined){
-                                this.list[k] = response.data[k];
+                            if(response[k] != undefined){
+                                this.list[k] = response[k];
                             }
                         }
                     }

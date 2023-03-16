@@ -56,36 +56,6 @@ export default {
     },
 
     methods: {
-
-        getList(page = null) {
-            let sendData = {
-                page : page ? page : this.list.current_page,
-                limit: 2
-            }
-
-            this.$helper.post('subjects', sendData)
-                .then(response => {
-                    if(response.data.length > 0) {
-                        for(let k in this.list){
-                            if(response[k] != undefined){
-                                this.list[k] = response[k];
-                            }
-                        }
-                    }
-                })
-                .catch(function (error) {
-                    console.error(error);
-                });
-        },
-
-
     },
-    // beforeRouteEnter(to, from, next) {
-    //     if (!window.Laravel.isLoggedin) {
-    //         window.location.href = "/";
-    //     }
-    //     next();
-    // }
-
 }
 </script>
