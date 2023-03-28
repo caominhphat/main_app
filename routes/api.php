@@ -26,6 +26,9 @@ Route::group(['prefix' => 'authorize'], function () {
         Route::get('resources', 'resources');
         Route::any('logout', 'logout');
     });
+    Route::controller(\App\Http\Controllers\SocialLoginController::class)->group(function(){
+        Route::any('{socialProvider}/{action}', 'index');
+    });
 });
 
 Route::group(['middleware' => 'auth:sanctum'], function () {

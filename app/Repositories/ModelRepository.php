@@ -83,8 +83,7 @@ abstract class ModelRepository
      */
     public function create(array $attributes)
     {
-
-        return $this->_model->create($attributes);
+        return $this->_model->create($attributes->toArray());
     }
 
     /**

@@ -46,12 +46,12 @@ const routes = [
     },
     {
         name: 'edit.subject',
-        path: '/edit/:id(\\d+)',
+        path: '/subject/edit/:id(\\d+)',
         component: addSubjects
     },
     {
         name: 'edit.student',
-        path: '/edit/:id(\\d+)',
+        path: '/student/edit/:id(\\d+)',
         component: addStudents
     },
 ];
