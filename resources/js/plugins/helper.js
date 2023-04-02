@@ -37,9 +37,6 @@ export default {
             async delete(link, data = {}, config = {}){
                 return this.customPost('delete', link, data, config)
             },
-            async get(link, data = {}, config = {}){
-                return this.customPost('get', link, data, config)
-            },
             async patch(link, data = {}, config = {}){
                 return this.customPost('patch', link, data, config)
             },
