@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use Illuminate\Support\Facades\Cache;
+
 abstract class ModelRepository
 {
     /**
@@ -46,13 +48,20 @@ abstract class ModelRepository
 
     public function getUndeletedItems($request)
     {
+        $cacheName = $this->_model->getTable().'_page_'.request('page', 1);
+
         $limit = $request['limit'] ?? 0;
 
         if (empty($limit) || !is_numeric($limit)) {
             $limit = config('app.list.limit');
         }
         $builder = $this->_model->where('delete_flag', config('constants.UNDELETED'));
-        return $builder->paginate($limit);
+
+        \cache()->remember($cacheName, 60*60, function() use ($limit, $builder) {
+            return $builder->paginate($limit);
+        });
+
+        return Cache::get($cacheName);
     }
 
     /**
@@ -74,8 +83,7 @@ abstract class ModelRepository
      */
     public function create(array $attributes)
     {
-
-        return $this->_model->create($attributes);
+        return $this->_model->create($attributes->toArray());
     }
 
     /**
@@ -113,7 +121,7 @@ abstract class ModelRepository
 
     public function index($request)
     {
-        return $this->getAll();
+        return $this->getUndeletedItems($request);
     }
 
     public function resources($id) {

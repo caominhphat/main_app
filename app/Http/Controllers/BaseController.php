@@ -26,6 +26,6 @@ class BaseController extends Controller
     }
 
     public function add (Request $request) {
-        return $this->repository->add($request->toArray());
+        return $this->repository->add($request);
     }
 }

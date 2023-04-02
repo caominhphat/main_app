@@ -13,12 +13,13 @@ export default {
     },
     methods: {
         mappingResources(data) {
-            if(data.data.validation !== undefined) {
-                this.resources['validation'] = this.isEditMode() ? data.data.validation['edit'] : data.data.validation['add']
+
+            if(data.validation !== undefined) {
+                this.resources['validation'] = this.isEditMode() ? data.validation['edit'] : data.validation['add']
             }
             for (let key in this.form) {
-                if(data.data.object !== undefined) {
-                    this.form[key] = data.data.object[key]
+                if(data.object !== undefined) {
+                    this.form[key] = data.object[key]
                 } else {
                     this.form[key] = ''
                 }
@@ -31,9 +32,7 @@ export default {
             }
             this.$helper.get(url)
                 .then(res=>{
-                    if(res.status == 200) {
-                        this.mappingResources(res);
-                    }
+                    this.mappingResources(res);
                 }).catch(err=>{
                     return err;
             })

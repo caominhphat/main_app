@@ -16,7 +16,7 @@ export default {
     methods: {
         deleteItem(id) {
             let action = '/delete/';
-            this.$helper.delete(this.prefix + action + `${id}`)
+            axios.delete('/api/' + this.prefix + action + `${id}`)
                 .then(response => {
                     this.getList(1)
                     this.list.current_page = 1;
@@ -33,12 +33,12 @@ export default {
         getList(page = null) {
             let sendData = {
                 page : page ? page : this.list.current_page,
-                limit: 2
+                limit: 10
             }
+
             this.$helper.post(this.prefix, sendData)
                 .then(response => {
-                    console.log(response)
-                    if(response.length > 0) {
+                    if(response.data.length > 0) {
                         for(let k in this.list){
                             if(response[k] != undefined){
                                 this.list[k] = response[k];
@@ -47,7 +47,7 @@ export default {
                     }
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    console.error(error);
                 });
         },
 
