@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
+use App\libs\Helper;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 abstract class ModelRepository
 {
@@ -42,11 +44,10 @@ abstract class ModelRepository
      */
     public function getAll()
     {
-
         return $this->_model->all();
     }
 
-    public function getUndeletedItems($request)
+    public function getUndeletedItems($request, $options=[])
     {
         $cacheName = $this->_model->getTable().'_page_'.request('page', 1);
 
@@ -55,13 +56,14 @@ abstract class ModelRepository
         if (empty($limit) || !is_numeric($limit)) {
             $limit = config('app.list.limit');
         }
-        $builder = $this->_model->where('delete_flag', config('constants.UNDELETED'));
-
-        \cache()->remember($cacheName, 60*60, function() use ($limit, $builder) {
+        $builder = $this->_model->whereUndeleted();
+        if(!empty($options) && array_key_exists('with', $options)) {
+            $builder = $builder->with($options['with']);
+        }
+        return \cache()->remember($cacheName, 60*60, function() use ($limit, $builder) {
             return $builder->paginate($limit);
         });
 
-        return Cache::get($cacheName);
     }
 
     /**
@@ -81,7 +83,7 @@ abstract class ModelRepository
      * @param array $attributes
      * @return mixed
      */
-    public function create(array $attributes)
+    public function create($attributes)
     {
         return $this->_model->create($attributes->toArray());
     }
@@ -100,7 +102,9 @@ abstract class ModelRepository
             return $result;
         }
 
-        return false;
+        return [
+            'success' => false
+        ];
     }
 
     /**
@@ -109,14 +113,20 @@ abstract class ModelRepository
      * @param $id
      * @return bool
      */
+
+
     public function delete($id)
     {
+            Helper::clearCache($this->_model->getTable());
             $result = $this->find($id);
             if ($result) {
                 $result->update(['delete_flag'=> config('constants.DELETED')]);
+
                 return true;
             }
-            return false;
+            return [
+                'success' => false
+            ];
     }
 
     public function index($request)

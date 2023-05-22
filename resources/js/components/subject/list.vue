@@ -1,6 +1,7 @@
 <template>
     <div class="container-xxl rounded">
         <h4 class="text-center" id="here">All subjects</h4><br/>
+        <notifyComponent :statement="alert.statement" :isApiDone="alert.isApiDone" :class-color="alert.classColor"></notifyComponent>
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -45,7 +46,9 @@
 
 <script>
 import ListMixin from '../../mixins/list.js'
+import notifyComponent from '../notify/notifyComponent.vue';
 export default {
+    components: {notifyComponent},
     mixins: [
         ListMixin
     ],

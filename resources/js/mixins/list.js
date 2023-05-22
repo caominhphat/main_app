@@ -11,18 +11,39 @@ export default {
               data: []
           },
           prefix: '',
+          alert:{
+              statement: 'Thất bại',
+              isApiDone: false,
+              classColor: 'bg-danger'
+          }
       }
     },
     methods: {
+        closeAlert(){
+            setTimeout(()=>{
+                this.alert.isApiDone = false;
+                this.alert.classColor = "bg-danger";
+                this.alert.statement = 'Thêm thất bại'
+            }, 2000)
+        },
         deleteItem(id) {
             let action = '/delete/';
-            axios.delete('/api/' + this.prefix + action + `${id}`)
+            this.$helper.delete(this.prefix + action + `${id}`)
                 .then(response => {
                     this.getList(1)
                     this.list.current_page = 1;
                     this.$forceUpdate
+                    console.log(response.success)
+                    if(response.success) {
+                        this.alert.classColor = "bg-success";
+                        this.alert.statement = 'Thêm thành công'
+                    }
+                    this.alert.isApiDone = true;
+                    this.closeAlert();
                 })
-                .catch(function (error) {
+                .catch((error) => {
+                    this.alert.isApiDone = true;
+                    this.closeAlert();
                     console.error(error);
                 });
         },

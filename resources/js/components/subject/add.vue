@@ -3,6 +3,7 @@
         <h4 class="text-center">{{mode}} Subject</h4>
         <div class="row">
             <div class="col-md-6">
+                <notifyComponent :statement="alert.statement" :isApiDone="alert.isApiDone" :class-color="alert.classColor"></notifyComponent>
                 <VeeForm :validation-schema="resources.validation" v-slot="{ handleSubmit , isSubmitting}">
                     <form @submit="handleSubmit($event, onSubmit)">
                         <div class="form-group">
@@ -22,9 +23,10 @@
 
 <script>
 import {Field, Form as VeeForm, ErrorMessage, defineRule} from 'vee-validate';
+import notifyComponent from '../notify/notifyComponent.vue';
 import addMixin from '../../mixins/add.js';
 export default {
-    components: {Field, VeeForm, ErrorMessage},
+    components: {Field, VeeForm, ErrorMessage, notifyComponent},
     data() {
         return {
             prefix: 'subjects',

@@ -2,12 +2,14 @@
     <div>
         <div class="container-xxl rounded">
             <h4 class="text-center">All students</h4><br/>
+            <notifyComponent :statement="alert.statement" :isApiDone="alert.isApiDone" :class-color="alert.classColor"></notifyComponent>
             <table class="table table-bordered">
                 <thead>
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Birth day</th>
+                    <th>File</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -16,6 +18,8 @@
                     <td>{{index + 1}}</td>
                     <td>{{student.name}}</td>
                     <td>{{student.birth_day}}</td>
+                    <td v-if="student.documents.length != 0">{{student.documents[0].name}} <button type="button" @click.prevent="downloadFile(student.documents[0])" class="btn btn-link">Download</button></td>
+                    <td v-else></td>
                     <td>
                         <div class="btn-group" role="group">
                             <router-link :to="{name: 'edit.student', params: { id: student.id }}" class="btn btn-primary">Edit</router-link>
@@ -50,8 +54,11 @@
 </template>
 
 <script>
-import ListMixin from '../../mixins/list.js'
+import ListMixin from '../../mixins/list.js';
+import notifyComponent from '../notify/notifyComponent.vue';
+import {saveAs} from 'file-saver';
 export default {
+    components: {notifyComponent},
     mixins: [
         ListMixin
     ],
@@ -60,5 +67,17 @@ export default {
             prefix: 'students'
         }
     },
+    methods:{
+        downloadFile(file){
+            this.$helper.get(this.prefix+"/download/"+file['url'], {}, {responseType: 'blob'})
+                .then(response => {
+                    if(response) {
+                        saveAs(response, file['name']);
+                    } else {
+                        console.log('Khong co file nao')
+                    }
+                });
+        }
+    }
 }
 </script>

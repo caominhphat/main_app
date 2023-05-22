@@ -8,7 +8,12 @@ export default {
             resources: {
                 validation:{}
             },
-            mode: ''
+            mode: '',
+            alert:{
+                statement: 'Thất bại',
+                isApiDone: false,
+                classColor: 'bg-danger'
+            }
         }
     },
     methods: {
@@ -52,13 +57,16 @@ export default {
             };
 
             promise.then(response => {
-                    if(response.status == 201 || response.status == 200) {
-                        alert('Them thanh cong')
-                    } else {
-                        alert('Them that bai')
-                    }
+                if(response.success) {
+                    this.alert.classColor = "bg-success";
+                    this.alert.statement = 'Thêm thành công'
+                }
+                this.alert.isApiDone = true;
+                this.closeAlert();
                 })
-                .catch(function (error) {
+                .catch((error) => {
+                    this.alert.isApiDone = true;
+                    this.closeAlert();
                     console.error(error);
                 });
         },
@@ -76,6 +84,14 @@ export default {
 
         loadMode() {
             this.mode = this.isEditMode() ? 'Edit' : 'Add'
+        },
+
+        closeAlert(){
+            setTimeout(()=>{
+                this.alert.isApiDone = false;
+                this.alert.classColor = "bg-danger";
+                this.alert.statement = 'Thêm thất bại'
+            }, 2000)
         }
     },
     created() {

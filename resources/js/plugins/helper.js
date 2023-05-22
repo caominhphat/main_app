@@ -48,7 +48,7 @@ export default {
                 this.setAuthHeader(config);
 
                 let promise = method != 'delete' ? axios[method]('/api/' + link, data, config):
-                    axios.delete('/api/' + link, { data : data, headers : config.headers });
+                     axios.delete('/api/' + link, {data: data, headers: config.headers});
 
                 return promise.then(res=>res.data)
                     .catch(error=>{

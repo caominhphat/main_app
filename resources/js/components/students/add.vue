@@ -3,6 +3,7 @@
         <h4 class="text-center">{{mode}} Student</h4>
         <div class="row">
             <div class="col-md-6">
+                <notifyComponent :statement="alert.statement" :isApiDone="alert.isApiDone" :class-color="alert.classColor"></notifyComponent>
                 <VeeForm :validation-schema="resources.validation" v-slot="{ handleSubmit , isSubmitting}">
                     <form @submit="handleSubmit($event, onSubmit)">
                         <div class="form-group">
@@ -37,10 +38,10 @@
 
 <script>
 import {Field, Form as VeeForm, ErrorMessage, defineRule} from 'vee-validate';
-import {saveAs} from 'file-saver';
+import notifyComponent from '../notify/notifyComponent.vue';
 import addMixin from '../../mixins/add.js';
 export default {
-    components: {Field, VeeForm, ErrorMessage},
+    components: {Field, VeeForm, ErrorMessage, notifyComponent},
     data() {
         return {
             prefix: 'students',
@@ -81,7 +82,6 @@ export default {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
-                'responseType': 'blob'
             }
             let formData = new FormData();
             for (const key in data) {
@@ -98,9 +98,17 @@ export default {
             };
 
             promise.then(response => {
-
+                console.log(response)
+                if(response.success) {
+                    this.alert.classColor = "bg-success";
+                    this.alert.statement = 'Thêm thành công'
+                }
+                this.alert.isApiDone = true;
+                this.closeAlert();
             })
-                .catch(function (error) {
+                .catch((error) => {
+                    this.alert.isApiDone = true;
+                    this.closeAlert();
                     console.log(error);
                 });
         },

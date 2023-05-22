@@ -31,7 +31,7 @@ Route::group(['prefix' => 'authorize'], function () {
     });
 });
 
-Route::group(['middleware' => 'auth:sanctum'], function () {
+Route::group(['middleware' => 'auth:sanctum', 'scopes:check-status'], function () {
     Route::controller(UserController::class)->group(function (){
         Route::post('check_valid_access_token', function (){
             return [
@@ -58,7 +58,17 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
             Route::any('resources/{id?}', 'resources');
             Route::put('edit', 'add');
             Route::post('add', 'add');
+            Route::get('download/{file_url}', 'download');
         });
+    });
+});
+
+Route::controller(\App\Http\Controllers\UserTestController::class)->group(function(){
+    Route::group(['prefix'=>'test'], function(){
+        Route::post('create', 'create');
+        Route::post('update', 'update');
+        Route::post('getItem', 'getItem');
+        Route::get('delete/{id}', 'delete');
     });
 });
 

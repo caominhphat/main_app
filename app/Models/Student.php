@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Events\ItemCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Student extends App
 {
@@ -16,6 +18,9 @@ class Student extends App
     protected $table = 'students';
     protected $primaryKey = 'id';
     protected $fillable = ['name', 'birth_day', 'delete_flag'];
+    protected $dispatchesEvents = [
+        'created' => ItemCreated::class,
+    ];
 
     public function subjects() {
         return $this->belongsToMany(Subject::class, 'student_subject', 'student_id', 'subject_id');
